@@ -10,9 +10,9 @@ path2le=/home/admin/conf/web
 path2ve=/usr/local/vesta/ssl
 
 # Certificates to check
-LEcrt="${path2le}/ssl.${HOSTNAME}.crt"
-LEkey="${path2le}/ssl.${HOSTNAME}.key"
-LEpem="${path2le}/ssl.${HOSTNAME}.pem"
+LEcrt="${path2le}/ssl."$(hostname -f)".crt"
+LEkey="${path2le}/ssl."$(hostname -f)".key"
+LEpem="${path2le}/ssl."$(hostname -f)".pem"
 VEcrt="${path2ve}/certificate.crt"
 VEkey="${path2ve}/certificate.key"
 VEpem="${path2ve}/certificate.pem"
