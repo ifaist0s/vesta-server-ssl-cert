@@ -5,6 +5,10 @@
 # The script checks for new LetsEncrypt certificates in /home/admin/conf/web/ssl.[SERVER-FQDN].*
 # and it installs the new certificates for all services before restarting them.
 
+# Notification email parameters
+mailto='CHANGE THIS TO YOUR EMAIL ADDRESS'
+mailsub="Server SSL Renewal: "$(hostname -f)
+
 # Set the paths of SSL certificates to check
 path2le=/home/admin/conf/web
 path2ve=/usr/local/vesta/ssl
@@ -31,5 +35,20 @@ then
 	chmod 660 $VEcrt $VEkey
 
 	# Restart services that depend on these certificates
-	systemctl restart vesta exim dovecot vsftpd
+	case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
+		Debian)
+			type="debian" ;;
+		Ubuntu)
+			service vesta restart
+			service exim4 restart
+			service dovecot restart
+			service vsftpd restart
+			;;
+		*)
+			systemctl restart vesta exim dovecot vsftpd
+			;;
+	esac
+	
+	# Notify
+	which mail > /dev/null 2>&1 && echo "The server certificate at "$(hostname -f)" has been renewed successfully :)" | mail -s "$mailsub" "$mailto"
 fi
