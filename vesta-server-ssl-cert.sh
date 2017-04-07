@@ -6,7 +6,7 @@
 # and it installs the new certificates for all services before restarting them.
 
 # Notification email parameters
-mailto='CHANGE THIS TO YOUR EMAIL ADDRESS'
+mailto='CHANGE_THIS TO YOUR EMAIL ADDRESS'
 mailsub="Server SSL Renewal: "$(hostname -f)
 
 # Set the paths of SSL certificates to check
