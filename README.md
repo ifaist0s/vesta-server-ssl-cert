@@ -8,7 +8,7 @@ VESTA has included support for the free and open Certificate Authority [Let’s 
 This script compares the FQDN Server certificates issued by Let's Encrypt and if they're different it places them to the correct directory with the correct name.
 
 ### Usage
-The easiest way to use the script is with a cron job that runs every day. At the command line type `crontab -e`,  enter the line `3 3 * * * /root/vesta-server-ssl-cert.sh` and then save and exit. Take care to replace the path of the script with the correct path.
+The easiest way to use the script is with a cron job that runs every day. At the command line type `crontab -e`,  enter the line `3 3 * * * /root/vesta-server-ssl-cert.sh` and then save and exit. Take care to replace the path of the script with the correct path. Don't forget `chmod +x vesta-server-ssl-cert.sh` before running the script.
 
 ### How the script works
 The script asumes that VESTA has a web domain under the admin account, which is the same as the server's FQDN, (e.g. *example.acme.com*) and has Let's Encrypt support.
