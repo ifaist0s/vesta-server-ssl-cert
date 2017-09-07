@@ -41,7 +41,7 @@ then
 		Ubuntu)
 			service vesta restart
 			service exim4 restart
-			service dovecot restart
+			/usr/bin/doveadm reload
 			service vsftpd restart
 			;;
 		*)
