@@ -39,10 +39,10 @@ then
 		Debian)
 			type="debian" ;;
 		Ubuntu)
-			service vesta restart
-			service exim4 restart
+			/sbin/initctl restart vesta
+			/sbin/initctl reload exim4
 			/usr/bin/doveadm reload
-			service vsftpd restart
+			/sbin/initctl restart vsftpd
 			;;
 		*)
 			systemctl restart vesta exim dovecot vsftpd
