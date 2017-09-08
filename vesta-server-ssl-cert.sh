@@ -39,8 +39,8 @@ then
 		Debian)
 			type="debian" ;;
 		Ubuntu)
-			/sbin/initctl restart vesta
-			/sbin/initctl reload exim4
+			/usr/sbin/service vesta restart
+			/usr/sbin/service exim4 restart
 			/usr/bin/doveadm reload
 			/sbin/initctl restart vsftpd
 			;;
