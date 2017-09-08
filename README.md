@@ -20,4 +20,4 @@ In the default VESTA configuration, server certificates are found in `/usr/local
 The script checks those two sets of certificates and if different, it copies LE certificates from `/home/admin/conf/web/` to `/usr/local/vesta/ssl` overwriting the old ones, setting correct file owner and permissions and then it restarts the relevant services.
 
 ### Works with...
-The script work fine in CentOS 7. **Be ware that it needs modifications to run on different OS flavors**.
+The script work fine in CentOS 7 and Ubuntu 14.04. **Be ware that it needs modifications to run on different OS flavors. There are issues with Ubuntu 16.04!**.
