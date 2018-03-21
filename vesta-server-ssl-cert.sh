@@ -31,21 +31,32 @@ then
 	cp --backup $LEpem $VEpem
 
 	# Set correct owner and permissions for certificates
-	chown root:mail $VEcrt $VEkey
-	chmod 660 $VEcrt $VEkey
+	chown root:mail $VEcrt $VEkey $VEpem
+	chmod 640 $VEcrt $VEkey $VEpem
 
 	# Restart services that depend on these certificates
 	case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
 		Debian)
 			type="debian" ;;
 		Ubuntu)
-			/usr/sbin/service vesta restart
-			/usr/sbin/service exim4 restart
-			/usr/bin/doveadm reload
-			/sbin/initctl restart vsftpd
+			case $(lsb_release -s -r) in
+				16.04)
+					systemctl restart vesta exim4 dovecot vsftpd
+					;;
+				14.04)
+					/usr/sbin/service vesta restart
+					/usr/sbin/service exim4 restart
+					/usr/bin/doveadm reload
+					/sbin/initctl restart vsftpd
+					;;
+
+				*)
+					echo UNKNOWN UBUNTU RELEASE. Restart services manualy.
+					;;
+			esac
 			;;
 		*)
-			systemctl restart vesta exim dovecot vsftpd
+			echo UNKNOWN OS. Restart services manualy.
 			;;
 	esac
 	
