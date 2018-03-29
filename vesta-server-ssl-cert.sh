@@ -12,6 +12,7 @@ mailsub="Server SSL Renewal: "$(hostname -f)
 # Set the paths of SSL certificates to check
 path2le=/home/admin/conf/web
 path2ve=/usr/local/vesta/ssl
+path2sq=/etc/mysql
 
 # Certificates to check
 LEcrt="${path2le}/ssl."$(hostname -f)".crt"
@@ -25,14 +26,21 @@ VEpem="${path2ve}/certificate.pem"
 if ! cmp --silent $LEcrt $VEcrt
 then
 	echo CERTIFICATES DIFFERENT - UPDATING
-	# Copy certificates
+	# Copy certificates for VESTA use
 	cp --backup $LEcrt $VEcrt
 	cp --backup $LEkey $VEkey
 	cp --backup $LEpem $VEpem
-
-	# Set correct owner and permissions for certificates
+	# Set owner and permissions for mail user
 	chown root:mail $VEcrt $VEkey $VEpem
 	chmod 640 $VEcrt $VEkey $VEpem
+	
+	# Copy certificates for MySQL use
+	cp $VEcrt $path2sq
+	cp $VEkey $path2sq
+	cp $VEpem $path2sq
+	# Set owner and permissions for mysql user
+	chown root:mysql $path2sq/certificate.*
+	chmod 640 $path2sq/certificate.*
 
 	# Restart services that depend on these certificates
 	case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
@@ -41,11 +49,12 @@ then
 		Ubuntu)
 			case $(lsb_release -s -r) in
 				16.04)
-					systemctl restart vesta exim4 dovecot vsftpd
+					systemctl restart vesta exim4 dovecot vsftpd mysql
 					;;
 				14.04)
 					/usr/sbin/service vesta restart
 					/usr/sbin/service exim4 restart
+					/usr/sbin/service mysql restart
 					/usr/bin/doveadm reload
 					/sbin/initctl restart vsftpd
 					;;
