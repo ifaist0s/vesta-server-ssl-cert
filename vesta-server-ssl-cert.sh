@@ -56,6 +56,9 @@ then
 			;;
 		Ubuntu)
 			case $(lsb_release -s -r) in
+				18.04)
+					systemctl restart vesta exim4 dovecot vsftpd mysql
+					;;
 				16.04)
 					systemctl restart vesta exim4 dovecot vsftpd mysql
 					;;
@@ -66,7 +69,6 @@ then
 					/usr/bin/doveadm reload
 					/sbin/initctl restart vsftpd
 					;;
-
 				*)
 					echo UNKNOWN UBUNTU RELEASE. Restart services manualy.
 					;;
