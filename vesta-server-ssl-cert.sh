@@ -26,9 +26,9 @@ VEpem="${path2ve}/certificate.pem"
 # Compare current certificate with auto generated ones from LetsEncrypt
 if ! cmp --silent $LEcrt $VEcrt
 then
-	echo CERTIFICATES DIFFERENT - UPDATING
+	echo CERTIFICATES DIFFERENT - UPDATING > $LOGFILE 2>&1
 	# Copy certificates for VESTA use
-	cp --backup $LEcrt $VEcrt > $LOGFILE 2>&1
+	cp --backup $LEcrt $VEcrt >> $LOGFILE 2>&1
 	cp --backup $LEkey $VEkey >> $LOGFILE 2>&1
 	cp --backup $LEpem $VEpem >> $LOGFILE 2>&1
 	# Set owner and permissions for mail user
@@ -81,5 +81,5 @@ then
 	esac
 	
 	# Notify
-	which mail > /dev/null 2>&1 && echo "The server certificate at "$(hostname -f)" has been renewed successfully :)" | mail -s "$mailsub" -a $LOGFILE "$mailto"
+	which mail > /dev/null 2>&1 && echo "The server certificate at "$(hostname -f)" has been renewed successfully :)" | mail -s "$mailsub" -A $LOGFILE "$mailto"
 fi
