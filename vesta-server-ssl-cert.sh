@@ -45,7 +45,15 @@ then
 	# Restart services that depend on these certificates
 	case $(head -n1 /etc/issue | cut -f 1 -d ' ') in
 		Debian)
-			type="debian" ;;
+			case $(lsb_release -s -r) in
+				9.8)
+					systemctl restart vesta exim4 dovecot vsftpd mysql
+					;;
+				*)
+					echo UNKNOWN DEBIAN RELEASE. Restart services manualy.
+					;;
+			esac
+			;;
 		Ubuntu)
 			case $(lsb_release -s -r) in
 				16.04)
