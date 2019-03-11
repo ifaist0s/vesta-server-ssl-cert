@@ -81,5 +81,5 @@ then
 	esac
 	
 	# Notify
-	which mail > /dev/null 2>&1 && echo "The server certificate at "$(hostname -f)" has been renewed successfully :)" | mail -s "$mailsub" -A $LOGFILE "$mailto"
+	which mail > /dev/null 2>&1 && echo -e "The server certificate at "$(hostname -f)" has been renewed successfully :) \n $(<$LOGFILE)" | mail -s "$mailsub" "$mailto"
 fi
